@@ -86,7 +86,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-brand-light flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-brand-light flex flex-col p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-4xl mx-auto">
         <header className="text-center mb-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-brand-dark">
