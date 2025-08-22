@@ -1,0 +1,5 @@
+{
+  "name": "Generador de informe para ABM",
+  "description": "Analiza el PDF de FTW y genera informe para confección de ABM",
+  "requestFramePermissions": []
+}
