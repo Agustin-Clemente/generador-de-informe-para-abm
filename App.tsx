@@ -100,7 +100,7 @@ const App: React.FC = () => {
           {renderContent()}
         </main>
         <footer className="text-center mt-8 text-gray-500 dark:text-gray-400">
-          <p>Realizado por Agustin Clemente</p>
+          <p> © 2025 Realizado por Agustin Clemente</p>
         </footer>
       </div>
     </div>
