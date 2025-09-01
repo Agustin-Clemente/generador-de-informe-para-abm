@@ -86,21 +86,21 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-brand-light flex flex-col p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-brand-light dark:bg-gray-900 flex flex-col p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-4xl mx-auto">
         <header className="text-center mb-8">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-brand-dark">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-brand-dark dark:text-white">
             Generador de informe para ABM
           </h1>
-          <p className="text-lg text-gray-600 mt-2">
+          <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
             Sube un documento para confeccionar el informe.
           </p>
         </header>
-        <main className="bg-white rounded-2xl shadow-2xl p-6 sm:p-8 transition-all duration-300 min-h-[300px] flex items-center justify-center">
+        <main className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 sm:p-8 transition-all duration-300 min-h-[300px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
           {renderContent()}
         </main>
-        <footer className="text-center mt-8 text-gray-500">
-            <p>Realizado por Agustin Clemente</p>
+        <footer className="text-center mt-8 text-gray-500 dark:text-gray-400">
+          <p>Realizado por Agustin Clemente</p>
         </footer>
       </div>
     </div>

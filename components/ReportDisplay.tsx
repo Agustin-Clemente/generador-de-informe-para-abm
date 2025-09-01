@@ -11,9 +11,9 @@ interface ReportDisplayProps {
 }
 
 const ReportItem: React.FC<{ label: string; value: React.ReactNode }> = ({ label, value }) => (
-  <div className="py-3 px-4 bg-gray-50 rounded-md">
-    <dt className="text-sm font-medium text-gray-500">{label}</dt>
-    <dd className="mt-1 text-md text-gray-900 font-semibold break-words">{value || 'N/A'}</dd>
+  <div className="py-3 px-4 bg-gray-800 rounded-md">
+    <dt className="text-sm font-medium text-gray-300">{label}</dt>
+    <dd className="mt-1 text-md text-white font-semibold break-words">{value}</dd>
   </div>
 );
 
@@ -104,62 +104,62 @@ ${mainActionLabel}: ${mainActionValue}
 
   return (
     <div className="w-full animate-fade-in">
-      <div className="bg-white p-6 rounded-lg shadow-md">
-        <div className="flex justify-between items-center mb-4 border-b pb-3">
-          <h2 className="text-2xl font-bold text-brand-dark">
-            Informe del Formulario
-          </h2>
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={handleCopy}
-              className={`flex items-center space-x-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${
-                copyStatus === 'copied'
-                  ? 'bg-green-100 text-green-700'
-                  : 'bg-brand-light text-brand-primary hover:bg-blue-200'
-              }`}
-            >
-              <CopyIcon className="w-5 h-5" />
-              <span>{copyStatus === 'copied' ? 'Copiado!' : 'Copiar texto'}</span>
-            </button>
-            <button
-              onClick={handleDownloadPdf}
-              className="flex items-center space-x-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-brand-light text-brand-primary hover:bg-blue-200"
-            >
-              <DownloadIcon className="w-5 h-5" />
-              <span>Descargar PDF</span>
-            </button>
-          </div>
+      <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-md">
+      <div className="flex justify-between items-center mb-4 border-b pb-3 border-gray-200 dark:border-gray-700">
+        <h2 className="text-2xl font-bold text-brand-dark dark:text-white">
+        Informe ABM
+        </h2>
+        <div className="flex items-center space-x-2">
+        <button
+          onClick={handleCopy}
+          className={`flex items-center space-x-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${
+          copyStatus === 'copied'
+            ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
+            : 'bg-brand-light text-brand-primary hover:bg-blue-200 dark:bg-gray-800 dark:text-blue-300 dark:hover:bg-gray-700'
+          }`}
+        >
+          <CopyIcon className="w-5 h-5" />
+          <span>{copyStatus === 'copied' ? 'Copiado!' : 'Copiar texto'}</span>
+        </button>
+        <button
+          onClick={handleDownloadPdf}
+          className="flex items-center space-x-2 px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-brand-light text-brand-primary hover:bg-blue-200 dark:bg-gray-800 dark:text-blue-300 dark:hover:bg-gray-700"
+        >
+          <DownloadIcon className="w-5 h-5" />
+          <span>Descargar PDF</span>
+        </button>
         </div>
-        <dl className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <ReportItem label="Nº de Expediente" value={data.expediente} />
-          <ReportItem label="Establecimiento" value={data.establecimiento} />
-          <ReportItem label="Teléfono" value={data.telefono} />
-          <ReportItem label="Delegación" value={data.delegacion} />
-          <ReportItem label="Repartición" value={data.reparticion} />
-          <ReportItem label="CUIL" value={data.cuil} />
-          <ReportItem label="Rol" value={data.rol} />
-          <ReportItem label="Apellido y Nombre" value={data.apellidoYNombre} />
-          <ReportItem label="Situación de revista" value={data.situacionDeRevista} />
-          <ReportItem label={isCese ? "Fecha de Cese" : "Fecha de alta"} value={data.fecha} />
-          <div className="md:col-span-2 lg:col-span-3">
-            <ReportItem label="Cargo a cubrir" value={data.cargoACubrir} />
-          </div>
-          <div className="md:col-span-2 lg:col-span-3">
-            {isCese ? (
-              <ReportItem label="Motivo de Cese" value={data.motivoDeCese} />
-            ) : (
-              <ReportItem label="Reemplaza a" value={data.reemplazaA} />
-            )}
-          </div>
-        </dl>
+      </div>
+      <dl className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <ReportItem label="Nº de Expediente" value={data.expediente} />
+        <ReportItem label="Establecimiento" value={data.establecimiento} />
+        <ReportItem label="Teléfono" value={data.telefono} />
+        <ReportItem label="Delegación" value={data.delegacion} />
+        <ReportItem label="Repartición" value={data.reparticion} />
+        <ReportItem label="CUIL" value={data.cuil} />
+        <ReportItem label="Rol" value={data.rol} />
+        <ReportItem label="Apellido y Nombre" value={data.apellidoYNombre} />
+        <ReportItem label="Situación de revista" value={data.situacionDeRevista} />
+        <ReportItem label={isCese ? "Fecha de Cese" : "Fecha de alta"} value={data.fecha} />
+        <div className="md:col-span-2 lg:col-span-3">
+        <ReportItem label="Cargo a cubrir" value={data.cargoACubrir} />
+        </div>
+        <div className="md:col-span-2 lg:col-span-3">
+        {isCese ? (
+          <ReportItem label="Motivo de Cese" value={data.motivoDeCese} />
+        ) : (
+          <ReportItem label="Reemplaza a" value={data.reemplazaA} />
+        )}
+        </div>
+      </dl>
       </div>
       <div className="mt-6 text-center">
-        <button
-          onClick={onReset}
-          className="px-6 py-2 bg-brand-primary text-white font-semibold rounded-lg shadow-md hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-all duration-200"
-        >
-          Analizar otro FTW
-        </button>
+      <button
+        onClick={onReset}
+        className="px-6 py-2 bg-brand-primary text-white font-semibold rounded-lg shadow-md hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-primary transition-all duration-200 dark:bg-blue-700 dark:hover:bg-blue-900"
+      >
+        Analizar otro FTW
+      </button>
       </div>
     </div>
   );

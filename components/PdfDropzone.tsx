@@ -1,4 +1,3 @@
-
 import React, { useState, useCallback, useRef } from 'react';
 import { UploadIcon } from './icons/UploadIcon';
 import { FileIcon } from './icons/FileIcon';
@@ -11,17 +10,22 @@ const PdfDropzone: React.FC<PdfDropzoneProps> = ({ onFileDrop }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dragCounter = useRef(0);
 
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    dragCounter.current += 1;
     setIsDragging(true);
   };
 
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsDragging(false);
+    dragCounter.current -= 1;
+    if (dragCounter.current === 0) {
+      setIsDragging(false);
+    }
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -32,6 +36,7 @@ const PdfDropzone: React.FC<PdfDropzoneProps> = ({ onFileDrop }) => {
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
+    dragCounter.current = 0;
     setIsDragging(false);
     setError(null);
 
@@ -79,7 +84,7 @@ const PdfDropzone: React.FC<PdfDropzoneProps> = ({ onFileDrop }) => {
             accept="application/pdf"
         />
         <div
-        className={`relative w-full p-10 text-center border-4 border-dashed ${borderStyle} rounded-xl transition-colors duration-300 cursor-pointer hover:border-brand-secondary bg-gray-50`}
+        className={`relative w-full p-10 text-center border-4 border-dashed ${borderStyle} rounded-xl transition-colors duration-300 cursor-pointer hover:border-brand-secondary `}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
