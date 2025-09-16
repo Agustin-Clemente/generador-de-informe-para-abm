@@ -89,7 +89,7 @@ export const extractDataFromDocumentText = async (text: string): Promise<ReportD
       ...parsedData,
       establecimiento: "E.N.S. 2 EN L.VIVAS M. ACOSTA",
       telefono: "49317981",
-      delegacion: "6",
+      delegacion: "III",
       reparticion: "3511",
     };
 
