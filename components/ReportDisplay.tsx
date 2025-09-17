@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { ReportData } from '../types';
@@ -21,7 +21,16 @@ const ReportItem: React.FC<{ label: string; value: React.ReactNode }> = ({ label
 const ReportDisplay: React.FC<ReportDisplayProps> = ({ data, onReset }) => {
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle');
   const [bloqueo, setBloqueo] = useState<string>('');
+  const [tipoMovimiento, setTipoMovimiento] = useState<string>('');
   const isCese = !!data.motivoDeCese;
+
+   useEffect(() => {
+    if (isCese && tipoMovimiento.includes("CON LICENCIA")) {
+      setBloqueo("No corresponde Bloqueo por ser un cese con Licencia");
+    } else if (isCese) {
+      setBloqueo("");
+    }
+  }, [tipoMovimiento, isCese]);
 
   const handleCopy = () => {
     const mainActionLabel = isCese ? "Motivo de Cese" : "Reemplaza a";
@@ -29,7 +38,8 @@ const ReportDisplay: React.FC<ReportDisplayProps> = ({ data, onReset }) => {
     const dateLabel = isCese ? "Fecha de Cese" : "Fecha de alta";
 
     let reportText = `
-Informe del Formulario
+Informe ABM
+Movimiento: ${tipoMovimiento}
 Nº de Expediente: ${data.expediente}
 Establecimiento: ${data.establecimiento}
 Teléfono: ${data.telefono}
@@ -67,6 +77,7 @@ ${mainActionLabel}: ${mainActionValue}
     doc.text("Informe ABM", 14, 22);
 
     const tableData = [
+      ["Movimiento", tipoMovimiento],
       ["Nº de Expediente", data.expediente],
       ["Establecimiento", data.establecimiento],
       ["Teléfono", data.telefono],
@@ -107,6 +118,17 @@ ${mainActionLabel}: ${mainActionValue}
     doc.save(`Informe ABM-${data.apellidoYNombre.replace(/\s/g, '_')}-${data.cuil}.pdf`);
   };
 
+  const movimientoOpciones = [
+    "DESIGNACION DOCENTE INTERINO SIN LICENCIA",
+    "DESIGNACION DOCENTE SUPLENTE SIN LICENCIA",
+    "CESE DOCENTE INTERINO SIN LICENCIA",
+    "CESE DOCENTE SUPLENTE SIN LICENCIA",
+    "DESIGNACION DOCENTE INTERINO CON LICENCIA",
+    "DESIGNACION DOCENTE SUPLENTE CON LICENCIA",
+    "CESE DOCENTE INTERINO CON LICENCIA",
+    "CESE DOCENTE SUPLENTE CON LICENCIA"
+  ];
+
 
   return (
     <div className="w-full animate-fade-in">
@@ -137,6 +159,24 @@ ${mainActionLabel}: ${mainActionValue}
         </div>
       </div>
       <dl className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="md:col-span-2 lg:col-span-3">
+          <div className="py-3 px-4 bg-gray-800 rounded-md">
+            <dt className="text-sm font-medium text-gray-300">Tipo de Movimiento</dt>
+            <input
+              list="movimiento-opciones"
+              type="text"
+              value={tipoMovimiento}
+              onChange={(e) => setTipoMovimiento(e.target.value)}
+              className="mt-1 w-full text-md text-white font-semibold break-words bg-transparent border-none focus:outline-none"
+              placeholder="Selecciona o escribe..."
+            />
+            <datalist id="movimiento-opciones">
+              {movimientoOpciones.map((opcion) => (
+                <option key={opcion} value={opcion} />
+              ))}
+            </datalist>
+          </div>
+        </div>
         <ReportItem label="Nº de Expediente" value={data.expediente} />
         <ReportItem label="Establecimiento" value={data.establecimiento} />
         <ReportItem label="Teléfono" value={data.telefono} />
@@ -162,6 +202,7 @@ ${mainActionLabel}: ${mainActionValue}
                     onChange={(e) => setBloqueo(e.target.value)}
                     className="mt-1 w-full text-md text-white font-semibold break-words bg-transparent border-none focus:outline-none"
                     placeholder="Ingresa la CCOO de bloqueo..."
+                    disabled={tipoMovimiento.includes("CON LICENCIA")}
                 />
             </div>
           </>
