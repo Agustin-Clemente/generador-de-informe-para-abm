@@ -20,6 +20,7 @@ const ReportItem: React.FC<{ label: string; value: React.ReactNode }> = ({ label
 
 const ReportDisplay: React.FC<ReportDisplayProps> = ({ data, onReset }) => {
   const [copyStatus, setCopyStatus] = useState<'idle' | 'copied'>('idle');
+  const [bloqueo, setBloqueo] = useState<string>('');
   const isCese = !!data.motivoDeCese;
 
   const handleCopy = () => {
@@ -27,7 +28,7 @@ const ReportDisplay: React.FC<ReportDisplayProps> = ({ data, onReset }) => {
     const mainActionValue = isCese ? data.motivoDeCese : data.reemplazaA;
     const dateLabel = isCese ? "Fecha de Cese" : "Fecha de alta";
 
-    const reportText = `
+    let reportText = `
 Informe del Formulario
 Nº de Expediente: ${data.expediente}
 Establecimiento: ${data.establecimiento}
@@ -42,6 +43,10 @@ ${dateLabel}: ${data.fecha}
 Cargo a cubrir: ${data.cargoACubrir}
 ${mainActionLabel}: ${mainActionValue}
     `.trim().replace(/^\s+/gm, '');
+
+     if (isCese && bloqueo) {
+        reportText += `\nBloqueo: ${bloqueo}`;
+    }
 
     navigator.clipboard.writeText(reportText).then(() => {
       setCopyStatus('copied');
@@ -76,6 +81,7 @@ ${mainActionLabel}: ${mainActionValue}
       isCese 
         ? ["Motivo de Cese", data.motivoDeCese] 
         : ["Reemplaza a", data.reemplazaA],
+        ...(isCese ? [["Bloqueo", bloqueo]] : []),
     ].filter(row => row[1]); // Filter out rows with empty values
 
     autoTable(doc, {
@@ -98,7 +104,7 @@ ${mainActionLabel}: ${mainActionValue}
       },
     });
 
-    doc.save(`Informe-${data.apellidoYNombre.replace(/\s/g, '_')}-${data.cuil}.pdf`);
+    doc.save(`Informe ABM-${data.apellidoYNombre.replace(/\s/g, '_')}-${data.cuil}.pdf`);
   };
 
 
@@ -146,7 +152,19 @@ ${mainActionLabel}: ${mainActionValue}
         </div>
         <div className="md:col-span-2 lg:col-span-3">
         {isCese ? (
+          <>
           <ReportItem label="Motivo de Cese" value={data.motivoDeCese} />
+          <div className="py-3 px-4 bg-gray-800 rounded-md mt-4">
+                <label className="text-sm font-medium text-gray-300">Bloqueo</label>
+                <input
+                    type="text"
+                    value={bloqueo}
+                    onChange={(e) => setBloqueo(e.target.value)}
+                    className="mt-1 w-full text-md text-white font-semibold break-words bg-transparent border-none focus:outline-none"
+                    placeholder="Ingresa la CCOO de bloqueo..."
+                />
+            </div>
+          </>
         ) : (
           <ReportItem label="Reemplaza a" value={data.reemplazaA} />
         )}
