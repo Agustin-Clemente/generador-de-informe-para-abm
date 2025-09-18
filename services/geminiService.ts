@@ -44,7 +44,7 @@ export const extractDataFromDocumentText = async (text: string): Promise<ReportD
     2.  **If Reporting a Cessation**:
         *   **expediente**: Look for an 'Expediente de Cese'. If found, use it. If not found, use the 'Expediente de Alta'.
         *   **fecha**: Use the date from 'FECHA DE CESE'.
-        *   **motivoDeCese**: Extract the text from 'MOTIVO DE CESE'. **IMPORTANT**: If the extracted value starts with 'presentacion' (case-insensitive), the final value MUST be 'presentacion reemplazado'.
+        *   **motivoDeCese**: Extract the text from 'MOTIVO DE CESE'. **IMPORTANT**: If the extracted value starts with 'presentacion' (case-insensitive), the final value MUST be 'Presentación reemplazado'.
         *   **rol**: Extract the 'Rol:' value. **CRITICAL**: If the value is not a number (i.e., it is empty or not present), you MUST replace the final value with a string formatted as: "aun no posee rol, alta tramitada por [Expediente de Alta]". For example: "aun no posee rol, alta tramitada por E.E. - 34142629 - 2025 - ESC200866".
         *   **reemplazaA**: This field must be null or omitted.
     3.  **If NOT Reporting a Cessation** (i.e., 'FECHA DE CESE' is empty):
