@@ -23,9 +23,10 @@ const reportSchema = {
     apellidoYNombre: { type: Type.STRING, description: "Full name of the proposed teacher ('DOCENTE PROPUESTO')." },
     situacionDeRevista: { type: Type.STRING, description: "Based on 'CARÁCTER DE LA DESIGNACIÓN'. Map 'SUPLENTE' to '4', 'INTERINO' to '3', and 'TITULAR' to '2'." },
     cargoACubrir: { type: Type.STRING, description: "A detailed job description. Combine 'CARGO A CUBRIR', 'ASIGNATURA', 'HORAS CÁTEDRA A CUBRIR', 'AÑO / DIV / COM / NIV', and 'Turno'. Formatting rules are critical: after the hours value (e.g., '2.00'), append ' hs'. For the 'AÑO / DIV' part (e.g., '2 / 1 / /'), format it as '2° 1°'. The final string must be a clean, comma-separated list, e.g., 'PROFESOR DE EDUCACIÓN MEDIA, EDUCACIÓN TECNOLÓGICA, 2.00 hs, 2° 1° Turno Tarde'." },
+    cc: { type: Type.STRING, description: "The 'Código de Cargo' calculated based on the starting words of 'cargoACubrir'." },
   },
   required: [
-    "expediente", "fecha", "cuil", "rol", "apellidoYNombre", "situacionDeRevista", "cargoACubrir"
+    "expediente", "fecha", "cuil", "rol", "apellidoYNombre", "situacionDeRevista", "cargoACubrir", "cc"
   ]
 };
 
@@ -65,7 +66,22 @@ export const extractDataFromDocumentText = async (text: string): Promise<ReportD
             **IMPORTANT: The 'AÑO / DIV / COM / NIV' part should ONLY be added if 'HORAS CÁTEDRA A CUBRIR' has a value greater than 0.**
         d. Append the 'Turno' value at the very end.
         e. The final string must not include any field labels. Example (with hours): 'PROFESOR DE EDUCACIÓN MEDIA, EDUCACIÓN TECNOLÓGICA, 2.00 hs, 2° 1° Turno Tarde'. Example (without hours): 'MAESTRO DE MATERIAS ESPECIALES TECNOLOGÍAS, DISEÑO Y PROGRAMACIÓN (EDUCACIÓN SUPERIOR) Turno TARDE'.
-    
+    *   **CC**: **CRITICAL: This field must be calculated immediately after 'cargoACubrir' is constructed.** Use the following logic based on the start of the final 'cargoACubrir' string (Case-Insensitive):
+        i. If **'cargoACubrir'** begins with **"MAESTRO DE SECCION"**, the **cc** value is **"847"**.
+        ii. If **'cargoACubrir'** begins with **"MAESTRO AUXILIAR"**, the **cc** value is **"889"**.
+        iii. If **'cargoACubrir'** begins with **"MAESTRO DE GRADO"**, the **cc** value is **"845"**.
+        iv. If **'cargoACubrir'** begins with **"AYUDANTE DE CLASES"**, the **cc** value is **"1567"**.
+        v. If **'cargoACubrir'** begins with **"TP1"**, the **cc** value is **"1507"**.
+        vi. If **'cargoACubrir'** begins with **"TP2"**, the **cc** value is **"1528"**.
+        vii. If **'cargoACubrir'** begins with **"TP3"**, the **cc** value is **"1549"**.
+        viii. If **'cargoACubrir'** begins with **"TP4"**, the **cc** value is **"1550"**.
+        ix. If **'cargoACubrir'** begins with **"TC"**, the **cc** value is **"1504"**.
+        x. If **'cargoACubrir'** begins with **"VICEDIRECTOR"**, the **cc** value is **"1517"**.
+        xi. If **'cargoACubrir'** begins with **"PRECEPTOR"**, the **cc** value is **"1582"**.
+        xii. If **'cargoACubrir'** begins with **"PROFESOR DE EDUCA"**, the **cc** value is **"1599"**.
+        xiii. For all other cases, the **cc** value must be an empty string **""**.
+
+
     Here is the document text:
     ---
     ${text}
