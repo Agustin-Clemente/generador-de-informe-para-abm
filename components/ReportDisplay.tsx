@@ -26,7 +26,7 @@ const ReportDisplay: React.FC<ReportDisplayProps> = ({ data, onReset }) => {
   const isCese = !!data.motivoDeCese;
 
   useEffect(() => {
-    setReportData(data);
+    setReportData({ ...data, cc: data.cc || '' });
     setBloqueo(''); // Limpia el bloqueo en cada nueva carga
   }, [data]);
 
@@ -43,6 +43,10 @@ const ReportDisplay: React.FC<ReportDisplayProps> = ({ data, onReset }) => {
   };
 
   const handleCopy = () => {
+    if (!reportData.cc) {
+      alert("Debe ingresar un código de cargo.");
+      return;
+    }
     const mainActionLabel = isCese ? "Motivo de Cese" : "Reemplaza a";
     const mainActionValue = isCese ? data.motivoDeCese : data.reemplazaA;
     const dateLabel = isCese ? "Fecha de Cese" : "Fecha de alta";
@@ -60,6 +64,7 @@ Rol: ${reportData.rol}
 Apellido y Nombre: ${reportData.apellidoYNombre}
 Situación de revista: ${reportData.situacionDeRevista}
 ${dateLabel}: ${reportData.fecha}
+CC: ${reportData.cc}
 Cargo a cubrir: ${reportData.cargoACubrir}
 ${mainActionLabel}: ${mainActionValue}
     `.trim().replace(/^\s+/gm, '');
@@ -75,6 +80,10 @@ ${mainActionLabel}: ${mainActionValue}
   };
 
   const handleDownloadPdf = () => {
+    if (!reportData.cc) {
+      alert("Debe ingresar un código de cargo.");
+      return;
+    }
     const doc = new jsPDF();
     const isCese = !!reportData.motivoDeCese;
 
@@ -98,6 +107,7 @@ ${mainActionLabel}: ${mainActionValue}
       ["Apellido y Nombre", reportData.apellidoYNombre],
       ["Situación de revista", reportData.situacionDeRevista],
       [isCese ? "Fecha de Cese" : "Fecha de alta", reportData.fecha],
+      ["CC", reportData.cc],
       ["Cargo a cubrir", reportData.cargoACubrir],
       isCese 
         ? ["Motivo de Cese", reportData.motivoDeCese] 
@@ -147,6 +157,7 @@ ${mainActionLabel}: ${mainActionValue}
         value={reportData[field] as string}
         onChange={(e) => handleInputChange(e, field)}
         className="mt-1 w-full text-md text-white font-semibold break-words bg-transparent border-none focus:outline-none"
+        placeholder={field === 'cc' ? "Campo obligatorio..." : ""}
       />
     </div>
   );
@@ -241,6 +252,10 @@ ${mainActionLabel}: ${mainActionValue}
           {renderEditableItem("Apellido y Nombre", "apellidoYNombre")}
           {renderEditableItem("Situación de revista", "situacionDeRevista")}
           {renderEditableItem(isCese ? "Fecha de Cese" : "Fecha de alta", "fecha")}
+
+          <div className="md:col-span-2 lg:col-span-3">
+            {renderEditableItem("CC", "cc")} 
+          </div>
           
           <div className="md:col-span-2 lg:col-span-3">
             {renderEditableItem("Cargo a cubrir", "cargoACubrir")}

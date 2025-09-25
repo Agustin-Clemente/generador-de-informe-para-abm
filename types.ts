@@ -10,6 +10,7 @@ export interface ReportData {
   apellidoYNombre: string;
   situacionDeRevista: string;
   fecha: string;
+  cc: string;
   cargoACubrir: string;
   reemplazaA?: string;
   motivoDeCese?: string;
