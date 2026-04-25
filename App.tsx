@@ -32,7 +32,7 @@ const App: React.FC = () => {
       }
 
       if (!fullText.trim()) {
-          setError('No se pudo extraer la información del PDF. The document might be image-based or corrupted.');
+          setError('No se pudo extraer la información del PDF.');
           setIsLoading(false);
           return;
       }
@@ -42,7 +42,11 @@ const App: React.FC = () => {
     } catch (err) {
       console.error(err);
        if (err instanceof Error) {
-        if (err.name === 'PasswordException') {
+        if (err.message === "SATURATION_ERROR") {
+          setError(
+            'El servidor está muy solicitado en este momento (saturación matutina).'
+          );
+        } else if (err.name === 'PasswordException') {
             setError('The PDF is password-protected. Please provide an unlocked document.');
         } else {
             setError('Failed to process the PDF file. It might be corrupted or in an unsupported format.');
@@ -72,8 +76,7 @@ const App: React.FC = () => {
           <p>{error}</p>
           <button
             onClick={handleReset}
-            className="mt-4 px-4 py-2 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors"
-          >
+            className="mt-4 px-4 py-2 bg-brand-primary text-white font-semibold rounded-lg hover:bg-brand-dark transition-colors">
             Reintentar
           </button>
         </div>
@@ -95,6 +98,13 @@ const App: React.FC = () => {
           <p className="text-lg text-gray-600 dark:text-gray-300 mt-2">
             Sube un documento para confeccionar el informe.
           </p>
+          <a
+          href="public/PlantillaEditable.pdf"
+          download="PlantillaEditable.pdf"
+          className="px-4 py-2 mt-4 bg-gray-600 text-white font-semibold rounded-lg hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
+        >
+          <span>Descargar plantilla</span>
+        </a>
         </header>
         <main className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl p-6 sm:p-8 transition-all duration-300 min-h-[300px] flex items-center justify-center border border-gray-200 dark:border-gray-700">
           {renderContent()}

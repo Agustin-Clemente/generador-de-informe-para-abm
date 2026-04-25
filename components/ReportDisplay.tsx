@@ -65,7 +65,7 @@ Apellido y Nombre: ${reportData.apellidoYNombre}
 Situación de revista: ${reportData.situacionDeRevista}
 ${dateLabel}: ${reportData.fecha}
 CC: ${reportData.cc}
-Cargo a cubrir: ${reportData.cargoACubrir}
+Cargo: ${reportData.cargoACubrir}
 ${mainActionLabel}: ${mainActionValue}
     `.trim().replace(/^\s+/gm, '');
 
@@ -108,7 +108,7 @@ ${mainActionLabel}: ${mainActionValue}
       ["Situación de revista", reportData.situacionDeRevista],
       [isCese ? "Fecha de Cese" : "Fecha de alta", reportData.fecha],
       ["CC", reportData.cc],
-      ["Cargo a cubrir", reportData.cargoACubrir],
+      ["Cargo", reportData.cargoACubrir],
       isCese 
         ? ["Motivo de Cese", reportData.motivoDeCese] 
         : ["Reemplaza a", reportData.reemplazaA],
@@ -258,7 +258,7 @@ ${mainActionLabel}: ${mainActionValue}
           </div>
           
           <div className="md:col-span-2 lg:col-span-3">
-            {renderEditableItem("Cargo a cubrir", "cargoACubrir")}
+            {renderEditableItem("Cargo", "cargoACubrir")}
           </div>
 
           <div className="md:col-span-2 lg:col-span-3">
